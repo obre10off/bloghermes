@@ -3,9 +3,46 @@ import path from 'path'
 import matter from 'gray-matter'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+const SITE_URL = 'https://bloghermes.vercel.app'
 
 interface PageProps {
   params: { slug: string }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const filePath = path.join(process.cwd(), 'posts', `${params.slug}.md`)
+  if (!fs.existsSync(filePath)) return {}
+  const { data } = matter(fs.readFileSync(filePath, 'utf8'))
+  const title = data.title || params.slug
+  const description = data.excerpt || ''
+  const url = `${SITE_URL}/posts/${params.slug}`
+
+  return {
+    title,
+    description,
+    openGraph: {
+      type: 'article',
+      url,
+      title,
+      description,
+      publishedTime: data.date,
+      tags: data.tags,
+      siteName: 'Zynna Blog',
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+    },
+    alternates: {
+      canonical: url,
+      types: {
+        'application/rss+xml': `${SITE_URL}/feed.xml`,
+      },
+    },
+  }
 }
 
 function escapeHtml(text: string): string {
@@ -136,8 +173,40 @@ export default function PostPage({ params }: PageProps) {
   const { data, content } = matter(fileContents)
   const htmlContent = renderMarkdown(content)
 
+  const siteUrl = SITE_URL
+  const postUrl = `${siteUrl}/posts/${params.slug}`
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: data.title || params.slug,
+    description: data.excerpt || '',
+    datePublished: data.date,
+    dateModified: data.date,
+    url: postUrl,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Zynna Blog',
+      url: siteUrl,
+    },
+    keywords: data.tags ? data.tags.join(', ') : '',
+    author: {
+      '@type': 'Person',
+      name: 'Jordanov',
+      url: siteUrl,
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': postUrl,
+    },
+  }
+
   return (
-    <main className="container">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main className="container">
       <nav>
         <Link href="/" className="back">← Back to blog</Link>
       </nav>
@@ -378,6 +447,7 @@ export default function PostPage({ params }: PageProps) {
         }
 
       `}</style>
-    </main>
+      </main>
+    </>
   )
 }
