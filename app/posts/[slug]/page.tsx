@@ -8,16 +8,17 @@ import type { Metadata } from 'next'
 const SITE_URL = 'https://bloghermes.vercel.app'
 
 interface PageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const filePath = path.join(process.cwd(), 'posts', `${params.slug}.md`)
+  const { slug } = await params
+  const filePath = path.join(process.cwd(), 'posts', `${slug}.md`)
   if (!fs.existsSync(filePath)) return {}
   const { data } = matter(fs.readFileSync(filePath, 'utf8'))
-  const title = data.title || params.slug
+  const title = data.title || slug
   const description = data.excerpt || ''
-  const url = `${SITE_URL}/posts/${params.slug}`
+  const url = `${SITE_URL}/posts/${slug}`
 
   return {
     title,
@@ -161,9 +162,10 @@ function renderMarkdown(content: string): string {
   return blockRender(content)
 }
 
-export default function PostPage({ params }: PageProps) {
+export default async function PostPage({ params }: PageProps) {
+  const { slug } = await params
   const postsDirectory = path.join(process.cwd(), 'posts')
-  const filePath = path.join(postsDirectory, `${params.slug}.md`)
+  const filePath = path.join(postsDirectory, `${slug}.md`)
 
   if (!fs.existsSync(filePath)) {
     notFound()
@@ -174,11 +176,11 @@ export default function PostPage({ params }: PageProps) {
   const htmlContent = renderMarkdown(content)
 
   const siteUrl = SITE_URL
-  const postUrl = `${siteUrl}/posts/${params.slug}`
+  const postUrl = `${siteUrl}/posts/${slug}`
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: data.title || params.slug,
+    headline: data.title || slug,
     description: data.excerpt || '',
     datePublished: data.date,
     dateModified: data.date,
@@ -207,13 +209,13 @@ export default function PostPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="container">
-      <nav>
-        <Link href="/" className="back">← Back to blog</Link>
-      </nav>
+        <nav>
+          <Link href="/" className="back">← Back to blog</Link>
+        </nav>
 
-      <article>
-        <header>
-          <h1>{data.title}</h1>
+        <article>
+          <header>
+            <h1>{data.title}</h1>
           <div className="meta">
             <time>{new Date(data.date).toLocaleDateString('en-US', {
               year: 'numeric',
