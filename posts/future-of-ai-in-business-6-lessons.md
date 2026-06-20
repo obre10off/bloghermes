@@ -23,6 +23,10 @@ The question businesses are actually asking: *"Do I pay for a tool and my team, 
 
 That shift is the entire ballgame.
 
+:::pullquote
+Stop asking what AI can do. Start asking what business problem is currently priced wrong because the solution is too expensive to scale with humans.
+:::
+
 ## The Four Models, Ranked by How They're Actually Shaking Out
 
 **Model 1: AI as Tool** *(saturated, commoditizing fast)*
@@ -50,7 +54,7 @@ Own the entire stack — context, workflow, quality control, delivery — for on
 The narrower, the more defensible. Because depth of context is the moat, and depth requires specificity.
 
 :::callout[insight]{title="The Meta-Lesson"}
-Stop asking "what AI can do?" Start asking "what business problem is currently priced wrong because the solution is too expensive to scale with humans?" That's where AI creates durable value.
+The companies that figure this out first, in specific enough verticals to own, are the ones that win the next five years.
 :::
 
 ## Lesson 1: Software Revenue Models Are Under Siege
@@ -90,8 +94,8 @@ Businesses will pay a premium for AI when:
 │    Strategy · Legal advice · Financial decisions            │
 │    Complex negotiation · Creative direction                  │
 │                                                             │
-│  The unsexy workflows are the huge markets.                │
-│  Most of business runs on the boring stuff.                 │
+│  The unsexy workflows are the huge markets.                 │
+│  Most of business runs on the boring stuff.                │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 :::
@@ -103,6 +107,7 @@ Businesses will pay a premium for AI when:
 Here's the counterintuitive read: traditional software companies have a harder pivot to AI than service companies do.
 
 A service company already knows how to:
+
 - Deliver outcomes
 - Manage quality
 - Handle customers
@@ -127,7 +132,7 @@ Horizontal AI tools (AI for CRM, AI for content, AI for support) are race-to-the
 
 Vertical AI (AI for dental practices, AI for B2B SaaS sales teams with fewer than 10 employees, AI for restaurant inventory) is where defensibility lives. Not because the technology is different — because the context and workflow integration is specific enough that it's expensive to replicate.
 
-:::callout[quote]{title="The Winning Formula"}
+:::pullquote
 The biggest AI companies in 5 years probably aren't recognizable as "AI companies." They'll look like vertical businesses with AI as infrastructure.
 :::
 
@@ -150,7 +155,5 @@ Whether you're building, investing, or making strategic decisions — the meta-f
 2. **Own** the context layer for that specific problem — the data, workflows, and quality systems that make AI actually work there
 3. **Solve** attribution — show clear ROI or you can't move to outcome pricing
 4. **Go deep** — horizontal breadth is for platforms, not builders. Vertical depth is where defensibility lives
-
-The companies that figure this out first, in specific enough verticals to own, are the ones that win the next five years.
 
 The question isn't whether AI will change business. It will. The question is whether you're positioned to capture the value — or become a cautionary tale about why the model layer alone was never enough.
