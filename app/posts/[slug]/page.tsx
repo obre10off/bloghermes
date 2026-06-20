@@ -8,14 +8,74 @@ interface PageProps {
   params: { slug: string }
 }
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
 function renderMarkdown(content: string): string {
-  // Simple markdown renderer (bold, italic, code, links, line breaks)
-  return content
+  // Split into blocks (paragraphs, headings, lists, blockquotes, code blocks, hr)
+  const blocks = content.split(/\n{2,}/)
+
+  return blocks.map(block => {
+    const trimmed = block.trim()
+    if (!trimmed) return ''
+
+    // Headings
+    if (trimmed.startsWith('### ')) {
+      return `<h3>${escapeHtml(trimmed.slice(4))}</h3>`
+    }
+    if (trimmed.startsWith('## ')) {
+      return `<h2>${escapeHtml(trimmed.slice(3))}</h2>`
+    }
+    if (trimmed.startsWith('# ')) {
+      return `<h1>${escapeHtml(trimmed.slice(2))}</h1>`
+    }
+
+    // Blockquotes
+    if (trimmed.startsWith('> ')) {
+      const lines = trimmed.split('\n').map(l => l.replace(/^> /, '')).join(' ')
+      return `<blockquote>${inlineRender(lines)}</blockquote>`
+    }
+
+    // Horizontal rules
+    if (/^---+$/.test(trimmed) || /^\*\*\*+$/.test(trimmed)) {
+      return '<hr>'
+    }
+
+    // Unordered lists
+    if (/^[-*] /.test(trimmed)) {
+      const items = trimmed.split('\n')
+        .filter(l => /^[-*] /.test(l))
+        .map(l => `<li>${inlineRender(l.replace(/^[-*] /, ''))}</li>`)
+        .join('')
+      return `<ul>${items}</ul>`
+    }
+
+    // Ordered lists
+    if (/^\d+\. /.test(trimmed)) {
+      const items = trimmed.split('\n')
+        .filter(l => /^\d+\. /.test(l))
+        .map(l => `<li>${inlineRender(l.replace(/^\d+\. /, ''))}</li>`)
+        .join('')
+      return `<ol>${items}</ol>`
+    }
+
+    // Paragraph
+    return `<p>${inlineRender(trimmed)}</p>`
+  }).join('\n')
+}
+
+function inlineRender(text: string): string {
+  return text
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/`(.+?)`/g, '<code>$1</code>')
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-    .replace(/\n/g, '<br>')
+    .replace(/\n/g, ' ')
 }
 
 export default function PostPage({ params }: PageProps) {
@@ -139,6 +199,60 @@ export default function PostPage({ params }: PageProps) {
         }
         .content a { color: var(--accent); text-decoration: none; }
         .content a:hover { text-decoration: underline; }
+
+        .content h2 {
+          font-size: 1.5rem;
+          font-weight: 700;
+          margin: 2.5rem 0 1rem;
+          letter-spacing: -0.01em;
+          border-top: 1px solid var(--border);
+          padding-top: 2rem;
+        }
+        .content h3 {
+          font-size: 1.125rem;
+          font-weight: 600;
+          margin: 2rem 0 0.75rem;
+          color: var(--accent-hover);
+        }
+
+        .content p { margin: 0 0 1.25rem; }
+        .content p:last-child { margin-bottom: 0; }
+
+        .content ul, .content ol {
+          margin: 0.75rem 0 1.25rem;
+          padding-left: 1.5rem;
+        }
+        .content ul { list-style: none; }
+        .content ul li::before {
+          content: '→';
+          color: var(--accent);
+          font-weight: 700;
+          display: inline-block;
+          width: 1.5rem;
+          margin-left: -1.5rem;
+        }
+        .content ol { list-style: decimal; }
+        .content li {
+          margin-bottom: 0.5rem;
+          padding-left: 0.25rem;
+          line-height: 1.7;
+        }
+
+        .content blockquote {
+          border-left: 3px solid var(--accent);
+          margin: 1.5rem 0;
+          padding: 0.75rem 1.25rem;
+          background: rgba(168, 85, 247, 0.05);
+          border-radius: 0 8px 8px 0;
+          font-style: italic;
+          color: var(--text-muted);
+        }
+
+        .content hr {
+          border: none;
+          border-top: 1px solid var(--border);
+          margin: 2.5rem 0;
+        }
 
         .content br { display: block; margin-top: 0.5rem; content: ''; }
       `}</style>
