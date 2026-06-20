@@ -48,7 +48,7 @@ export default function Home() {
                 })}</time>
                 {post.tags.length > 0 && (
                   <div className="tags">
-                    {post.tags.map(tag => (
+                    {post.tags.map((tag: string) => (
                       <span key={tag} className="tag">{tag}</span>
                     ))}
                   </div>
