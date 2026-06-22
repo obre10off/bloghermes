@@ -1,2 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 *, *::before, *::after { box-sizing: border-box; }
-body { margin: 0; }
+
+:root {
+  /* Dark theme (default) */
+  --bg: #0a0a0f;
+  --bg-card: #111118;
+  --bg-elevated: #18181f;
+  --text: #e4e4e7;
+  --text-muted: #71717a;
+  --accent: #a855f7;
+  --accent-hover: #c084fc;
+  --border: #27272a;
+  --code-bg: #111118;
+  --code-border: #27272a;
+  --code-text: #c084fc;
+}
+
+[data-theme="light"] {
+  --bg: #f8f7f4;
+  --bg-card: #ffffff;
+  --bg-elevated: #f0efe9;
+  --text: #1a1a1a;
+  --text-muted: #6b7280;
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --border: #e5e5e0;
+  --code-bg: #f3f2ef;
+  --code-border: #e5e5e0;
+  --code-text: #7c3aed;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  transition: background 0.2s ease, color 0.2s ease;
+}

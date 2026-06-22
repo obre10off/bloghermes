@@ -61,30 +61,10 @@ export default function Home() {
       </div>
 
       <style>{`
-        :root {
-          --bg: #0a0a0f;
-          --bg-card: #111118;
-          --text: #e4e4e7;
-          --text-muted: #71717a;
-          --accent: #a855f7;
-          --accent-hover: #c084fc;
-          --border: #27272a;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-          background: var(--bg);
-          color: var(--text);
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-          line-height: 1.6;
-          min-height: 100vh;
-        }
-
         .container {
           max-width: 720px;
           margin: 0 auto;
-          padding: 4rem 1.5rem;
+          padding: 2rem 1.5rem 5rem;
         }
 
         header {
@@ -97,6 +77,7 @@ export default function Home() {
           font-size: 2.5rem;
           font-weight: 700;
           letter-spacing: -0.02em;
+          color: var(--text);
         }
 
         .subtitle {
@@ -111,18 +92,21 @@ export default function Home() {
           border: 1px solid var(--border);
           border-radius: 12px;
           padding: 1.5rem;
-          transition: border-color 0.2s, transform 0.2s;
+          transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
         }
 
         .post-card:hover {
           border-color: var(--accent);
           transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(168, 85, 247, 0.08);
         }
 
         .post-card h2 {
           font-size: 1.25rem;
           font-weight: 600;
           margin-bottom: 0.5rem;
+          color: var(--text);
+          transition: color 0.2s;
         }
 
         .post-card a {
@@ -156,6 +140,11 @@ export default function Home() {
         .excerpt { color: var(--text-muted); font-size: 0.9375rem; }
 
         .empty { color: var(--text-muted); text-align: center; padding: 3rem 0; }
+
+        @media (max-width: 600px) {
+          .container { padding: 1.5rem 1.25rem 4rem; }
+          h1 { font-size: 2rem; }
+        }
       `}</style>
     </main>
   )
